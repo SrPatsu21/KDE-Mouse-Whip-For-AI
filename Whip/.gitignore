@@ -1,0 +1,11 @@
+# Build output
+**/build/*
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Editor files
+.vscode/
+.idea/
