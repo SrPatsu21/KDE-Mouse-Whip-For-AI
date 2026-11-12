@@ -7,6 +7,7 @@ set -euo pipefail
 ROOT="$(pwd)"
 THEME="$ROOT/Whip/cursor-theme"
 BUILD="$THEME/build/Whip"
+ARCHIVE="$THEME/build/Whip.tar.gz"
 
 # Verificar se estamos na raiz do projeto
 if [ ! -d "$THEME" ]; then
@@ -18,6 +19,12 @@ fi
 if ! command -v xcursorgen >/dev/null 2>&1; then
     echo "Erro: xcursorgen não encontrado."
     echo "Instale com: sudo pacman -S xorg-xcursorgen"
+    exit 1
+fi
+
+# Verificar dependência de compactação
+if ! command -v tar >/dev/null 2>&1; then
+    echo "Erro: tar não encontrado."
     exit 1
 fi
 
@@ -51,5 +58,16 @@ echo "==> Verificando arquivos gerados..."
 file "$BUILD/cursors/default"
 file "$BUILD/cursors/click"
 
+echo "==> Compactando tema..."
+
+tar -czf "$ARCHIVE" \
+    -C "$THEME/build" \
+    Whip
+
+echo "==> Verificando arquivo compactado..."
+
+ls -lh "$ARCHIVE"
+
 echo "==> Compilação concluída!"
 echo "Tema gerado em: $BUILD"
+echo "Arquivo compactado em: $ARCHIVE"
